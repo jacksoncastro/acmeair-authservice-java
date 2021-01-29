@@ -47,11 +47,11 @@ public class AuthServiceRest {
   private static final String JWT_GROUP = "user";
 
   @Inject
-  private SecurityUtils secUtils;
+  SecurityUtils secUtils;
 
   @Inject
   @RestClient
-  private CustomerClient customerClient;
+  CustomerClient customerClient;
 
   /**
    * Login with username/password.

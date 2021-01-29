@@ -16,12 +16,14 @@
 
 package com.acmeair.restclient;
 
+import javax.enterprise.context.ApplicationScoped;
+
 import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
@@ -31,20 +33,22 @@ import org.eclipse.microprofile.faulttolerance.Timeout;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
+import javax.ws.rs.core.MediaType;
+
+@Path("/internal")
 @RegisterRestClient(configKey="customerClient")
-@Path("/")
+@ApplicationScoped
 public interface CustomerClient {
 
-  @POST
-  @Consumes({ "application/x-www-form-urlencoded" })
-  @Produces("application/json")
-  @Path("/internal/validateid")
-  @Timeout(500) // throws exception after 500 ms which invokes fallback handler
+  @GET
+  @Path("/validateid/{login}/{password}")
+  @Produces(MediaType.APPLICATION_JSON)
+  @Timeout(500) 
   @CircuitBreaker(requestVolumeThreshold=4,failureRatio=0.5,successThreshold=10,delay=1,delayUnit=ChronoUnit.SECONDS)
   @Retry(maxRetries = 3, delayUnit = ChronoUnit.SECONDS, delay = 5, durationUnit = ChronoUnit.SECONDS, 
     maxDuration = 30,retryOn = Exception.class, abortOn = IOException.class)
   @Fallback(LoginFallbackHandler.class)
   public LoginResponse validateCustomer(
-      @FormParam("login") String login, 
-      @FormParam("password") String password);
+      @PathParam("login") String login, 
+      @PathParam("password") String password);
 }

@@ -19,6 +19,9 @@ package com.acmeair.web;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+//import javax.enterprise.context.ApplicationScoped;
+
+//@ApplicationScoped
 @ApplicationPath("/")
 public class AuthServiceApp extends Application {
 }

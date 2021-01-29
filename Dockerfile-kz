@@ -1,0 +1,20 @@
+FROM openjdk:8-jre-alpine
+
+RUN mkdir /app
+
+WORKDIR /app
+
+COPY target/acmeair-authservice-java-3.3.jar /app/kz.jar
+COPY src/main/liberty/config/resources/security/key.p12 /app/key.p12
+ENV KEYSTORE_LOCATION=/app/key.p12
+
+EXPOSE 9080
+
+ENV JAEGER_SERVICE_NAME=jaeger-service
+ENV JAEGER_AGENT_HOST=jaeger
+ENV JAEGER_REPORTER_LOG_SPANS=false
+ENV JAEGER_SAMPLER_TYPE=const
+ENV JAEGER_SAMPLER_PARAM=1
+
+CMD ["java", "-DcustomerClient/mp-rest/url=http://acmeair-nginx1/customer", "-jar", "kz.jar"]
+

@@ -44,30 +44,30 @@ import org.jose4j.lang.JoseException;
 public class SecurityUtils {
 
   @Inject @ConfigProperty(name = "KEYSTORE_LOCATION", defaultValue = "/output/resources/security/key.p12")
-  private String keyStoreLocation;
+  String keyStoreLocation;
 
   //probably not a good idea to use as an env variable? But doing this for now.
   @Inject @ConfigProperty(name = "KEYSTORE_PASSWORD", defaultValue = "secret")
-  private String keyStorePassword;
+  String keyStorePassword;
 
   @Inject @ConfigProperty(name = "KEYSTORE_ALIAS", defaultValue = "default")
-  private String keyStoreAlias;
+  String keyStoreAlias;
 
   @Inject @ConfigProperty(name = "JWT_ISSUER", defaultValue = "http://acmeair-ms")
-  private String jwtIssuer;
+  String jwtIssuer;
   
   @Inject @ConfigProperty(name = "JWT_ALGORITHM", defaultValue = "RS256")
-  private String jwtAlgorithm;
+  String jwtAlgorithm;
 
   // Only used for testing the authservice itself.
   @Inject @ConfigProperty(name = "DISABLE_CUSTOMER_VALIDATION", defaultValue = "false")
-  private boolean customerValidationDisabled;
+  boolean customerValidationDisabled;
 
   private PrivateKey privateKey;
   private RsaJsonWebKey jwk;
 
   @PostConstruct
-  private void init() {
+  void init() {
 
     //Get the private key to generate JWTs and create the public JWK to send to the booking/customer service.
     try {
