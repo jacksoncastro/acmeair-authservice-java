@@ -15,5 +15,5 @@ ENV JAEGER_SAMPLER_PARAM=1
 COPY src/main/liberty/config/resources/security/key.p12 /opt/key.p12
 ENV KEYSTORE_LOCATION=/opt/key.p12
 
-ENTRYPOINT ["java", "-XX:MaxRAMPercentage=90.0", "-jar", "payara-micro.jar", "--contextroot", "/auth","--port","9080"] 
+ENTRYPOINT ["java", "-Dhttp.keepalive=true", "-Dhttp.maxConnections=100", "-XX:MaxRAMPercentage=90.0", "-jar", "payara-micro.jar", "--contextroot", "/auth","--port","9080"] 
 CMD ["--deploymentDir", "/opt/payara/deployments","--postbootcommandfile" ,"post-boot" ]

@@ -1,4 +1,5 @@
-FROM openjdk:jre-alpine
+#FROM openjdk:jre-alpine
+FROM openjdk:8-jre-alpine
 
 ADD target/acmeair-authservice-java-3.3-thorntail.jar /opt/thorntail.jar
 
@@ -12,5 +13,5 @@ COPY src/main/liberty/config/resources/security/key.p12 /opt/key.p12
 
 ENV KEYSTORE_LOCATION=/opt/key.p12
 
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar","/opt/thorntail.jar", "-Djava.net.preferIPv4Stack=true", "-Dthorntail.context.path=/auth" ,"-Dthorntail.http.port=9080"]
+EXPOSE 9080
+ENTRYPOINT ["java", "-Dhttp.keepalive=true", "-Dhttp.maxConnections=100", "-jar","/opt/thorntail.jar", "-Djava.net.preferIPv4Stack=true", "-Dthorntail.context.path=/auth" ,"-Dthorntail.http.port=9080"]

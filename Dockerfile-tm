@@ -1,0 +1,7 @@
+FROM tomee:8.0.6-microprofile
+COPY target/acmeair-authservice-java-3.3.war /usr/local/tomee/webapps/auth.war
+ENV JAVA_OPTS="-Dhttp.keepalive=true -Dhttp.maxConnections=100 -Dgeronimo.opentracing.span.converter.zipkin.logger.active=false"
+RUN sed -i "s/8080/9080/g" conf/server.xml
+
+COPY --chown=1001:0 src/main/liberty/config/resources/security/key.p12 /usr/key.p12
+ENV KEYSTORE_LOCATION=/usr/key.p12
