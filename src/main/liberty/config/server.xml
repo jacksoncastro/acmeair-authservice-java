@@ -10,6 +10,7 @@
 		httpPort="9080" httpsPort="9443">
   </httpEndpoint>
 
+  <mpMetrics authentication="false"/>
   <quickStartSecurity userName="${env.USERNAME}" userPassword="${env.PASSWORD}" />
 
   <webApplication name="acmeair-authservice" location="acmeair-authservice-java-3.3.war" contextRoot="/auth">

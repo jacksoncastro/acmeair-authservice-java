@@ -20,6 +20,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -31,13 +32,14 @@ import javax.ws.rs.core.Response;
 
 import org.eclipse.microprofile.faulttolerance.exceptions.CircuitBreakerOpenException;
 import org.eclipse.microprofile.faulttolerance.exceptions.TimeoutException;
-import org.eclipse.microprofile.metrics.annotation.SimplyTimed;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import com.acmeair.restclient.CustomerClient;
 import com.acmeair.utils.SecurityUtils;
 
 @Path("/")
+@RequestScoped
 public class AuthServiceRest {
 
   private static final Logger logger = Logger.getLogger(AuthServiceRest.class.getName());
@@ -60,7 +62,7 @@ public class AuthServiceRest {
   @Consumes({ "application/x-www-form-urlencoded" })
   @Produces("text/plain")
   @Path("/login")
-  @SimplyTimed(name = "com.acmeair.web.AuthServiceRest.login", tags = "app=acmeair-authservice-java")
+  @Timed(name = "com.acmeair.web.AuthServiceRest.login", tags = "app=acmeair-authservice-java")
   public Response login(@FormParam("login") String login, @FormParam("password") String password) {
     try {
       if (logger.isLoggable(Level.FINE)) {
@@ -93,6 +95,7 @@ public class AuthServiceRest {
   }
 
   @GET
+  @Path("/status")
   public Response status() {
     return Response.ok("OK").build();
   }
